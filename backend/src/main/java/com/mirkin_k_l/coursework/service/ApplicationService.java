@@ -3,10 +3,10 @@ package com.mirkin_k_l.coursework.service;
 
 import com.mirkin_k_l.coursework.entity.application.Application;
 import com.mirkin_k_l.coursework.entity.application.ApplicationStatus;
-import com.mirkin_k_l.coursework.entity.employee.Employee;
+import com.mirkin_k_l.coursework.entity.employee.User;
 import com.mirkin_k_l.coursework.exception.NotFoundException;
 import com.mirkin_k_l.coursework.repository.ApplicationRepository;
-import com.mirkin_k_l.coursework.repository.EmployeeRepository;
+import com.mirkin_k_l.coursework.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +21,7 @@ public class ApplicationService {
     private ApplicationRepository applicationRepository;
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private UserRepository employeeRepository;
 
 
     public List<Application> findByEmployee(Long id) {
@@ -39,16 +39,6 @@ public class ApplicationService {
     }
 
     public Application create(Application application) {
-
-        List<Employee> employees = employeeRepository.findAll();
-
-        Employee leastLoadedEmployee = employees.stream()
-                .min(Comparator.comparingLong(Employee::getCountApplications))
-                .orElseThrow(() -> new RuntimeException("Нет доступных сотрудников"));
-
-        application.setEmployee(leastLoadedEmployee);
-        application.setStatus(ApplicationStatus.NEW);
-
         return applicationRepository.saveAndFlush(application);
     }
 

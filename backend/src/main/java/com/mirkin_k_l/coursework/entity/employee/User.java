@@ -1,10 +1,8 @@
 package com.mirkin_k_l.coursework.entity.employee;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mirkin_k_l.coursework.entity.application.Application;
-import com.mirkin_k_l.coursework.entity.application.ApplicationStatus;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,9 +16,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "employees")
+@Table(name = "users")
 @EqualsAndHashCode(of = "email")
-public class Employee {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,22 +36,12 @@ public class Employee {
     @Column(name = "middle_name")
     private String middleName;
 
-    @Transient
-    private Integer countApplications;
-
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Application> applications = new ArrayList<>();
+    private List<Application> employeeApplications = new ArrayList<>();
 
-    public Long getCountApplications(){
-        Long count = 0L;
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Application> clientApplications = new ArrayList<>();
 
-        for (Application application : applications) {
-            if (application.getStatus() != ApplicationStatus.DONE) {
-                count++;
-            }
-        }
-
-        return count;
-    }
 }

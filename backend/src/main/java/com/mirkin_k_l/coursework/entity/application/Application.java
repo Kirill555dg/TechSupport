@@ -2,8 +2,7 @@ package com.mirkin_k_l.coursework.entity.application;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.mirkin_k_l.coursework.entity.employee.Employee;
+import com.mirkin_k_l.coursework.entity.employee.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,7 @@ public class Application {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID;
+    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -36,9 +35,14 @@ public class Application {
     @Enumerated(EnumType.STRING) // Хранить значения как строки в БД
     private ApplicationStatus status;
 
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    @JsonIgnore
+    private User client;
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
     @JsonIgnore
-    private Employee employee;
+    private User employee;
+
 }
