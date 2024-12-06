@@ -2,18 +2,23 @@ package com.mirkin_k_l.coursework.entity.application;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mirkin_k_l.coursework.entity.employee.User;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mirkin_k_l.coursework.entity.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "tasks")
+@Table(name = "applications")
+@JsonInclude(JsonInclude.Include.NON_NULL) // Исключить null-значения из JSON
 public class Application {
 
     @Id
@@ -32,6 +37,9 @@ public class Application {
     @Column(name = "description", columnDefinition = "text")
     private String description;
 
+    @Column(name = "creation_date")
+    private LocalDateTime dateOfCreation;
+
     @Enumerated(EnumType.STRING) // Хранить значения как строки в БД
     private ApplicationStatus status;
 
@@ -45,4 +53,19 @@ public class Application {
     @JsonIgnore
     private User employee;
 
+    @PrePersist
+    private void init() {
+        dateOfCreation = LocalDateTime.now();
+    }
+
+    // Возвращаем ID клиента в JSON
+    @JsonProperty("clientId")
+    public Long getClientId() {
+        return client != null ? client.getId() : null;
+    }
+
+    @JsonProperty("employeeId")
+    public Long getEmployeeId() {
+        return employee != null ? employee.getId() : null;
+    }
 }
