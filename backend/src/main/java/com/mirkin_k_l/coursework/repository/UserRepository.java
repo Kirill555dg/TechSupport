@@ -1,6 +1,6 @@
 package com.mirkin_k_l.coursework.repository;
 
-import com.mirkin_k_l.coursework.entity.employee.User;
+import com.mirkin_k_l.coursework.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
