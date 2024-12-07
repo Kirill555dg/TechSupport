@@ -1,19 +1,20 @@
 package com.mirkin_k_l.coursework.service;
 
 
-import com.mirkin_k_l.coursework.entity.employee.User;
+import com.mirkin_k_l.coursework.entity.user.User;
 import com.mirkin_k_l.coursework.exception.AlreadyExistException;
 import com.mirkin_k_l.coursework.exception.NotFoundException;
 import com.mirkin_k_l.coursework.exception.WrongPasswordException;
 import com.mirkin_k_l.coursework.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public User registration(User employee) {
         String email = employee.getEmail();
@@ -43,4 +44,5 @@ public class UserService {
     public void deleteUser(String email) {
         userRepository.deleteByEmail(email);
     }
+
 }
