@@ -31,15 +31,16 @@ public class Application {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "description", columnDefinition = "text")
+    @Column(name = "description", columnDefinition = "text", nullable = false)
     private String description;
 
-    @Column(name = "creation_date")
+    @Column(name = "creation_date", nullable = false)
     private LocalDateTime dateOfCreation;
 
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING) // Хранить значения как строки в БД
     private ApplicationStatus status;
 
