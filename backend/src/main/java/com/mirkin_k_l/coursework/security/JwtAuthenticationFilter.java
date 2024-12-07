@@ -5,14 +5,19 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
@@ -35,12 +40,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String email = jwtUtil.extractEmail(token);
                 String role = jwtUtil.extractRole(token);
 
+
+                List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
                 // Создание аутентификации
                 UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(email, null, null);
+                        new UsernamePasswordAuthenticationToken(email, null, authorities);
 
-                // Устанавливаем роль пользователя в контексте безопасности
-                authentication.setDetails(role);
+                log.debug("Token: {}", token);
+                log.debug("Extracted email: {}", email);
+                log.debug("Extracted role: {}", role);
+                log.debug("Authorities: {}", authorities);
 
                 // Сохраняем аутентификацию в SecurityContext
                 SecurityContextHolder.getContext().setAuthentication(authentication);

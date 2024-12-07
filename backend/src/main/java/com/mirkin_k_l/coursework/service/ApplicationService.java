@@ -42,10 +42,10 @@ public class ApplicationService {
                 .orElseThrow(() -> new NotFoundException("Заявки с id " + id + " не существует"));
     }
 
-    public Application createWithClient(Application application, Long clientId) {
+    public Application createWithClient(Application application, String  email) {
 
-        User client = userRepository.findById(clientId)
-                .orElseThrow(() -> new IllegalArgumentException("Сотрудник с таким id не найден"));
+        User client = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Сотрудник с email="+email+" не найден"));
 
         application.setClient(client);
         application.setEmail(client.getEmail());

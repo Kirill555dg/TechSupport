@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -26,10 +27,10 @@ public class ApplicationController {
     @PostMapping("/create")
     public ResponseEntity<Application> createApplication(
             @RequestBody Application application,
-            @RequestParam(required = false) Long clientId) {
-
-        if (clientId != null) {
-            application = applicationService.createWithClient(application, clientId);
+            @AuthenticationPrincipal String email) {
+        log.debug(String.valueOf(email));
+        if (!email.equals("anonymousUser")) {
+            application = applicationService.createWithClient(application, email);
         } else {
             application = applicationService.create(application);
         }
@@ -69,6 +70,8 @@ public class ApplicationController {
     @GetMapping("/{id}")
     public ResponseEntity<Application> findApplication(@PathVariable Long id) {
         Application application = applicationService.findById(id);
+
+        log.debug("Application {}", application);
         return ResponseEntity.ok(application);
     }
 

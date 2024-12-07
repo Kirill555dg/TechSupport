@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // Разрешить запросы ко всем эндпоинтам
-                .allowedOrigins("http://127.0.0.1:5500") // Разрешить только с указанного источника
+                .allowedOrigins("http://localhost:8008") // Разрешить только с указанного источника
                 .allowedMethods("GET", "POST", "PUT", "DELETE") // Разрешить методы
                 .allowedHeaders("*") // Разрешить любые заголовки
                 .allowCredentials(true); // Разрешить отправку куки, если нужно

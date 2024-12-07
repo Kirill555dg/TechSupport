@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -50,11 +48,11 @@ public class User {
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Application> employeeApplications = new ArrayList<>();
+    private List<Application> assignedApplications = new ArrayList<>();
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Application> clientApplications = new ArrayList<>();
+    private List<Application> submittedApplications = new ArrayList<>();
 
     @JsonIgnore
     public String getFullName() {
@@ -75,8 +73,8 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", role=" + role +
-                ", employeeApplications=" + employeeApplications +
-                ", clientApplications=" + clientApplications +
+                ", assignedApplications=" + assignedApplications +
+                ", clientApplications=" + submittedApplications +
                 '}';
     }
 }

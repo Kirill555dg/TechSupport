@@ -24,11 +24,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/v1/auth/login", "/api/v1/auth/register", "/api/v1/application/create").permitAll()  // Разрешаем доступ к логину и регистрации
-                        .requestMatchers("/api/v1/user/profile").authenticated()  // Доступ только для авторизованных пользователей
-                        .requestMatchers("/api/v1/user/client", "/api/v1/application/client").hasRole("CLIENT")  // Доступ только для пользователей с ролью CLIENT
-                        .requestMatchers("/api/v1/user/employee", "/api/v1/application").hasRole("EMPLOYEE")  // Доступ только для сотрудников
-                        .requestMatchers("/api/v1/user/set-role").hasRole("ADMIN")
+                        // Доступ для всех пользователей
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/application/create").permitAll()
+                        .requestMatchers("/api/v1/user/profile").hasAnyAuthority("CLIENT", "EMPLOYEE", "ADMIN")
+                        .requestMatchers("/api/v1/user/submitted-applications").hasAnyAuthority("CLIENT", "ADMIN", "EMPLOYEE")
+                        .requestMatchers("/api/v1/user/assigned-applications").hasAnyAuthority("EMPLOYEE", "ADMIN")
+                        .anyRequest().hasAuthority("ADMIN")
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Добавляем фильтр для проверки JWT
         return http.build(); // Возвращаем конфигурацию

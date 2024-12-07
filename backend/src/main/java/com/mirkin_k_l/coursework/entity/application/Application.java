@@ -69,4 +69,19 @@ public class Application {
     public Long getEmployeeId() {
         return employee != null ? employee.getId() : null;
     }
+
+    @Override
+    public String toString() {
+        return "Application{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", dateOfCreation=" + dateOfCreation +
+                ", status=" + status +
+                ", client=" + getClientId() +
+                ", employee=" + getEmployeeId() +
+                '}';
+    }
 }

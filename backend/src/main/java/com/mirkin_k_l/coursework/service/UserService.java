@@ -1,6 +1,7 @@
 package com.mirkin_k_l.coursework.service;
 
 
+import com.mirkin_k_l.coursework.entity.application.Application;
 import com.mirkin_k_l.coursework.entity.user.User;
 import com.mirkin_k_l.coursework.entity.user.UserRole;
 import com.mirkin_k_l.coursework.exception.AlreadyExistException;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -93,5 +96,19 @@ public class UserService {
         // Сохраняем администратора в базе данных
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         userRepository.save(admin);
+    }
+
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public List<Application> findUserAssignedApplications(String email) {
+        User user = findByEmail(email);
+        return user.getAssignedApplications();
+    }
+
+    public List<Application> findUserSubmittedApplications(String email) {
+        User user = findByEmail(email);
+        return user.getSubmittedApplications();
     }
 }
