@@ -8,6 +8,7 @@ import com.mirkin_k_l.coursework.exception.NotFoundException;
 import com.mirkin_k_l.coursework.repository.ApplicationRepository;
 import com.mirkin_k_l.coursework.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -18,18 +19,21 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
 
     private final UserRepository userRepository;
 
-    public List<Application> findByEmployee(Long id) {
-        return applicationRepository.findByEmployeeId(id, Sort.by(Sort.Direction.ASC, "id"));
+    public List<Application> findByEmployee(String email) {
+        List<Application> applications = applicationRepository.findByEmployee_Email(email, Sort.by(Sort.Direction.ASC, "id"));
+        log.debug("OK");
+        return applications;
     }
 
-    public List<Application> findByClient(Long id) {
-        return applicationRepository.findByClientId(id, Sort.by(Sort.Direction.ASC, "id"));
+    public List<Application> findByClient(String email) {
+        return applicationRepository.findByClient_Email(email, Sort.by(Sort.Direction.ASC, "id"));
     }
 
     public List<Application> findAll() {
@@ -73,12 +77,12 @@ public class ApplicationService {
     }
 
     @Transactional
-    public Application assignEmployee(Long applicationId, Long employeeId) {
+    public Application assignEmployee(Long applicationId, String email) {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new IllegalArgumentException("Заявка с таким id не найдена"));
 
-        User employee = userRepository.findById(employeeId)
-                .orElseThrow(() -> new IllegalArgumentException("Сотрудник с таким id не найден"));
+        User employee = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Сотрудник с такой почтой не найден"));
 
         application.setEmployee(employee);
         return applicationRepository.save(application);

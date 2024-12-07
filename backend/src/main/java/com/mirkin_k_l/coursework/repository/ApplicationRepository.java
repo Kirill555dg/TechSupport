@@ -18,14 +18,16 @@ import java.util.List;
 @Repository
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
 
-    List<Application> findByEmployeeId(Long employeeId, Sort sort);
-
-    List<Application> findByClientId(Long id, Sort sort);
-
+    List<Application> findByEmployee_Id(Long employeeId, Sort sort);
+    List<Application> findByEmployee_Email(String email, Sort sort);
+    List<Application> findByClient_Id(Long id, Sort sort);
+    List<Application> findByClient_Email(String email, Sort sort);
 
     List<Application> findByDateOfCreationBetween(LocalDateTime from, LocalDateTime to, Sort sort);
 
     List<Application> findByDateOfCreationAfter(LocalDateTime from, Sort sort);
 
     List<Application> findByDateOfCreationBefore(LocalDateTime to, Sort sort);
+
+
 }

@@ -34,7 +34,7 @@ public class ApplicationController {
         } else {
             application = applicationService.create(application);
         }
-
+        log.debug("Applications {}", application);
         return ResponseEntity.status(HttpStatus.CREATED).body(application);
     }
 
@@ -45,18 +45,23 @@ public class ApplicationController {
 
         ApplicationStatus status = ApplicationStatus.valueOf(body.get("status"));
         Application application = applicationService.update(id, status);
-
+        log.debug("Applications {}", application);
         return ResponseEntity.ok(application);
     }
 
-    @GetMapping("/employee/{id}")
-    public ResponseEntity<List<Application>> findAllEmployeeApplications(@PathVariable Long id) {
-        return ResponseEntity.ok(applicationService.findByEmployee(id));
+    @GetMapping("/employee")
+    public ResponseEntity<List<Application>> findAllEmployeeApplications(@AuthenticationPrincipal String email) {
+        log.debug("EMAIL: {}", email);
+        List<Application> applications = applicationService.findByEmployee(email);
+        log.debug("Applications {}", applications);
+        return ResponseEntity.ok(applications);
     }
 
-    @GetMapping("/client/{id}")
-    public ResponseEntity<List<Application>> findAllClientApplications(@PathVariable Long id) {
-        return ResponseEntity.ok(applicationService.findByClient(id));
+    @GetMapping("/client")
+    public ResponseEntity<List<Application>> findAllClientApplications(@AuthenticationPrincipal String email) {
+        List<Application> applications = applicationService.findByClient(email);
+        log.debug("Applications {}", applications);
+        return ResponseEntity.ok(applications);
     }
 
     @GetMapping
@@ -83,8 +88,9 @@ public class ApplicationController {
 
     @PutMapping("/{id}/assign")
     public ResponseEntity<Application> assignEmployee(@PathVariable Long id,
-                                                      @RequestParam Long employeeId) {
-        Application updatedApplication = applicationService.assignEmployee(id, employeeId);
-        return ResponseEntity.ok(updatedApplication);
+                                                      @AuthenticationPrincipal String email) {
+        Application application = applicationService.assignEmployee(id, email);
+        log.debug("Application {}", application);
+        return ResponseEntity.ok(application);
     }
 }

@@ -54,7 +54,6 @@ public class User {
     @JsonIgnore
     private List<Application> submittedApplications = new ArrayList<>();
 
-    @JsonIgnore
     public String getFullName() {
         StringBuilder fullName = new StringBuilder();
         if (lastName != null) fullName.append(lastName);

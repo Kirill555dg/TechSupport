@@ -1,6 +1,7 @@
 package com.mirkin_k_l.coursework.entity.application;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -38,6 +39,7 @@ public class Application {
     private String description;
 
     @Column(name = "creation_date", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDateTime dateOfCreation;
 
     @Column(name = "status", nullable = false)
@@ -60,15 +62,21 @@ public class Application {
     }
 
     // Возвращаем ID клиента в JSON
-    @JsonProperty("clientId")
-    public Long getClientId() {
-        return client != null ? client.getId() : null;
+//    @JsonProperty("clientId")
+//    public Long getClientId() {
+//        return client != null ? client.getId() : null;
+//    }
+
+    @JsonProperty("employeeName")
+    public String getEmployeeName() {
+        return employee != null ? employee.getFullName() : null;
     }
 
-    @JsonProperty("employeeId")
-    public Long getEmployeeId() {
-        return employee != null ? employee.getId() : null;
+    @JsonProperty("employeeEmail")
+    public String getEmployeeEmail() {
+        return employee != null ? employee.getEmail() : null;
     }
+
 
     @Override
     public String toString() {
@@ -80,8 +88,8 @@ public class Application {
                 ", description='" + description + '\'' +
                 ", dateOfCreation=" + dateOfCreation +
                 ", status=" + status +
-                ", client=" + getClientId() +
-                ", employee=" + getEmployeeId() +
+                // ", client=" + getClientId() +
+                ", employee=" + getEmployeeName() + getEmployeeEmail() +
                 '}';
     }
 }

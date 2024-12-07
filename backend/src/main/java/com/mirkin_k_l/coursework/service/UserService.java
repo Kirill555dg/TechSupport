@@ -111,4 +111,9 @@ public class UserService {
         User user = findByEmail(email);
         return user.getSubmittedApplications();
     }
+
+    public User findUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Пользователь с id="+id+" не найден"));
+        return user;
+    }
 }

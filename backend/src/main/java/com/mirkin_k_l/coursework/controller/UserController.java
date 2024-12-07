@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -31,6 +32,12 @@ public class UserController {
         return userService.findByEmail(email);
     }
 
+    @GetMapping("/{id}")
+    public User getUserInfo(@PathVariable Long id) {
+        return userService.findUserById(id);
+    }
+
+
     @GetMapping("/assigned-applications")
     public List<Application> getEmployeeApplications(@AuthenticationPrincipal String email) {
         return userService.findUserAssignedApplications(email);
@@ -42,8 +49,9 @@ public class UserController {
     }
 
     @PostMapping("/set-role/{id}")
-    public ResponseEntity<User> setRole(@PathVariable Long id, @RequestBody UserRole role) {
+    public ResponseEntity<User> setRole(@PathVariable Long id, @RequestBody Map<String, String> body) {
         log.debug("ID: {}", id);
+        UserRole role = UserRole.valueOf(body.get("role"));
         log.debug("ROLE: {}", role);
         User user = userService.setRole(id, role);
         return ResponseEntity.ok(user);
