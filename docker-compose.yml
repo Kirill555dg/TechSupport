@@ -16,12 +16,8 @@ services:
     container_name: backend
     ports:
       - "8000:8000" # Бэкенд доступен на порту 8000
-    environment:
-      - DB_USER=root
-      - DB_PASSWORD=root
-      - SPRING_DATASOURCE_USERNAME=${DB_USER}
-      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/database
+    env_file:
+      - ./backend/.env
     depends_on:
       - database
     networks:
@@ -32,10 +28,8 @@ services:
     container_name: database
     ports:
       - "5432:5432" # База данных PostgreSQL доступна на порту 8010
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: database
+    env_file:
+      - ./database/.env
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
