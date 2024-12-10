@@ -40,6 +40,7 @@ public class SecurityConfig {
                         // Доступ для всех пользователей
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/application/create").permitAll()
+                        .requestMatchers("/api/v1/application/client").hasAnyAuthority("CLIENT", "EMPLOYEE", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/application/{id}").hasAnyAuthority("CLIENT", "EMPLOYEE", "ADMIN")
                         .requestMatchers("/api/v1/application/**").hasAnyAuthority("EMPLOYEE", "ADMIN")
                         .requestMatchers("/api/v1/user/profile").hasAnyAuthority("CLIENT", "EMPLOYEE", "ADMIN")

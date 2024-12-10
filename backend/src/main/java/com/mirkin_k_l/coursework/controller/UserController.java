@@ -37,7 +37,6 @@ public class UserController {
         return userService.findUserById(id);
     }
 
-
     @GetMapping("/assigned-applications")
     public List<Application> getEmployeeApplications(@AuthenticationPrincipal String email) {
         return userService.findUserAssignedApplications(email);
