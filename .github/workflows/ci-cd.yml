@@ -30,13 +30,15 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image
+      - name: Build and Push Backend Docker Image
         run: |
-          docker build -t myimage:latest .
+          docker build -t kerrodar/coursework-springboot-backend:latest ./backend
+          docker push kerrodar/coursework-springboot-backend:latest
 
-      - name: Push Docker image
+      - name: Build and Push Frontend Docker Image
         run: |
-          docker push myimage:latest
+          docker build -t kerrodar/coursework-nginx-frontend:latest ./frontend
+          docker push kerrodar/coursework-nginx-frontend:latest
 
   deploy:
     runs-on: ubuntu-latest
