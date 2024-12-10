@@ -47,6 +47,6 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           kubectl set image deployment/backend-deployment backend=kerrodar/coursework-springboot-backend:latest
-          kubectl rollout restart deployment/backend-deployment
+          kubectl rollout restart deployment/backend-deployment -n coursework
           kubectl set image deployment/frontend-deployment frontend=kerrodar/coursework-nginx-frontend:latest
-          kubectl rollout restart deployment/frontend-deployment
+          kubectl rollout restart deployment/frontend-deployment -n coursework
