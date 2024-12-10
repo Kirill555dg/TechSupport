@@ -32,16 +32,12 @@ jobs:
 
       - name: Build and Push Backend Docker Image
         run: |
-          docker build --cache-from=type=local,src=/tmp/.buildx-cache \
-                      --cache-to=type=local,dest=/tmp/.buildx-cache,mode=max \
-                      -t kerrodar/coursework-springboot-backend:latest ./backend
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache -t kerrodar/coursework-springboot-backend:latest ./backend
           docker push kerrodar/coursework-springboot-backend:latest
 
       - name: Build and Push Frontend Docker Image
         run: |
-          docker build --cache-from=type=local,src=/tmp/.buildx-cache \
-                      --cache-to=type=local,dest=/tmp/.buildx-cache,mode=max \
-                      -t kerrodar/coursework-nginx-frontend:latest ./frontend
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache -t kerrodar/coursework-nginx-frontend:latest ./frontend
           docker push kerrodar/coursework-nginx-frontend:latest
 
 
