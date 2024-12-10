@@ -41,22 +41,29 @@ jobs:
           docker push kerrodar/coursework-nginx-frontend:latest
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build # Этот шаг зависит от завершения job build
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v1
-        with:
-          version: 'latest'
-
-      - name: Set up Kubeconfig
-        run: echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
+      - name: Verify kubectl version
+        run: kubectl version --client
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl set image deployment/backend-deployment backend=myimage:latest
-          kubectl apply -f k8s/deployment.yaml
+          # Переходим в папку с манифестами Kubernetes
+          cd "C:\\Users\\Kiril\\dev\\Coursework-k8s"
+
+          # Применяем все манифесты для backend
+          kubectl apply -f backend-configs/
+
+          # Применяем все манифесты для frontend
+          kubectl apply -f frontend-configs/
+
+          # Применяем все манифесты для базы данных
+          kubectl apply -f database-configs/
+
+          # Применяем все манифесты для Traefik
+          kubectl apply -f traefik-configs/
