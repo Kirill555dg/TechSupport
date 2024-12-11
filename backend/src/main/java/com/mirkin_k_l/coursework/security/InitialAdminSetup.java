@@ -1,8 +1,5 @@
 package com.mirkin_k_l.coursework.security;
 
-import com.mirkin_k_l.coursework.entity.user.User;
-import com.mirkin_k_l.coursework.entity.user.UserRole;
-import com.mirkin_k_l.coursework.exception.NotFoundException;
 import com.mirkin_k_l.coursework.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;

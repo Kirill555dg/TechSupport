@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main # Запускать на изменения в ветке main
+      - main 
 
 jobs:
   build:
@@ -35,7 +35,7 @@ jobs:
 
   deploy:
     runs-on: self-hosted
-    needs: build # Этот шаг зависит от завершения job build
+    needs: build 
 
     steps:
       - name: Checkout code
