@@ -1,8 +1,0 @@
-.login__field {
-  width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  margin-bottom: 5px;
-  /* Уменьшили отступы между полями */
-}
