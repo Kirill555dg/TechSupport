@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: coursework
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: springboot-backend
+          image: kerrodar/coursework-springboot-backend:latest
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://database-service.coursework:5432/database"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "root"
+            - name: SERVER_PORT
+              value: "8008"
+            - name: FRONTEND_URL
+              value: "http://frontend.localhost"
