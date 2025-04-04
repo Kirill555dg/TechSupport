@@ -1,0 +1,4 @@
+[submodule "backend"]
+    path = backend
+    url = https://github.com/Kirill555dg/TechSupport-backend.git
+    branch = main
